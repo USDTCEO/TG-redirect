@@ -9,7 +9,7 @@
   <!-- particles.js -->
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <style>
-    /* ===== Reset & базовые стили ===== */
+    /* ===== Сброс стилей ===== */
     * { box-sizing:border-box; margin:0; padding:0; }
     html, body {
       width:100%; height:100%; overflow:hidden;
@@ -17,56 +17,57 @@
       font-family:'Orbitron',sans-serif;
       perspective:1000px;
     }
-    a{color:inherit;text-decoration:none;}
+    a { color:inherit; text-decoration:none; }
 
-    /* ===== Звёздный фон-портал ===== */
+    /* ===== Звёздный фон ===== */
     #particles {
       position:fixed; top:0; left:0;
       width:200%; height:200%;
       background: radial-gradient(circle,#fff 1px,transparent 1px);
       background-size:50px 50px;
       animation:moveStars 60s linear infinite;
-      z-index:1;
-      pointer-events:none;
+      z-index:1; pointer-events:none;
       transition: filter .5s ease;
     }
+    /* эффект при отправке желания */
     #particles.wish-effect {
       filter: hue-rotate(30deg) brightness(1.2);
     }
     @keyframes moveStars { to { transform:translate(-50%,-50%); } }
 
-    /* ===== вспышки ===== */
+    /* ===== Вспышки ===== */
     .flash, .warpFlash {
       position:fixed; top:0; left:0;
       width:100%; height:100%; background:#fff;
-      display:none; z-index:3; pointer-events:none;
+      display:none; z-index:5; pointer-events:none;
     }
-    .flash { animation:flashIn .8s ease-out forwards; display:block; }
-    .warpFlash { animation:flashIn .6s ease-out forwards; }
-    @keyframes flashIn {0%{opacity:1;}80%{opacity:0;}100%{opacity:0;display:none;}}
+    .flash { display:block; animation:flashIn .8s forwards; }
+    .warpFlash { animation:flashIn .6s forwards; }
+    @keyframes flashIn { 0%{opacity:1;}80%{opacity:0;}100%{opacity:0;display:none;} }
 
-    /* ===== основной контейнер ===== */
+    /* ===== Контейнер всего контента ===== */
     .container {
-      position:relative; z-index:2;
+      position:relative; z-index:4;
       display:flex; flex-direction:column;
       align-items:center; justify-content:center;
       height:100%; text-align:center;
       opacity:0; transform:translateY(20px);
       animation:showUp .8s ease-out .8s forwards;
-      transition:transform .1s;
+      transition: transform .1s;
     }
     @keyframes showUp { to { opacity:1; transform:translateY(0); } }
-    .container.tilt { will-change:transform; }
+    .container.tilt { will-change: transform; }
 
-    /* ===== живой бот ===== */
+    /* ===== Живой бот ===== */
     .bot {
       font-size:120px; margin-bottom:24px;
-      animation:botBreath 3s ease-in-out infinite, botBlink 5s ease-in-out infinite;
+      animation:botBreath 3s ease-in-out infinite,
+                 botBlink 5s ease-in-out infinite;
     }
     @keyframes botBreath {0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
     @keyframes botBlink  {0%,20%,50%,70%,100%{opacity:1;}25%,65%{opacity:0.4;}}
 
-    /* ===== инструкция ===== */
+    /* ===== Инструкция ===== */
     .instruction {
       background:rgba(255,255,255,0.05);
       border:2px solid #00d1ff; border-radius:16px;
@@ -74,35 +75,34 @@
       box-shadow:0 0 20px rgba(0,209,255,0.4);
       animation:glow 3s ease-in-out infinite alternate;
     }
-    @keyframes glow {from{box-shadow:0 0 10px rgba(0,209,255,0.2);}to{box-shadow:0 0 30px rgba(0,209,255,0.8);}}
-    .instruction p {font-size:18px; line-height:1.4; margin:12px 0;}
-    .instruction p b {color:#00d1ff; font-size:20px;}
+    @keyframes glow { from{box-shadow:0 0 10px rgba(0,209,255,0.2);} to{box-shadow:0 0 30px rgba(0,209,255,0.8);} }
+    .instruction p { font-size:18px; line-height:1.4; margin:12px 0; }
+    .instruction p b { color:#00d1ff; font-size:20px; }
 
-    /* ===== кнопка ===== */
+    /* ===== Кнопка ===== */
     .btn {
       padding:14px 36px; font-size:18px; font-weight:700;
       background:rgba(255,255,255,0.1); border:2px solid #00d1ff;
       border-radius:12px; backdrop-filter:blur(12px);
       box-shadow:0 0 15px rgba(0,209,255,0.5);
-      transition:transform .3s,box-shadow .3s;
       animation:pulse 2s ease-out infinite;
-      margin-bottom:16px; cursor:pointer; z-index:2; position:relative;
+      margin-bottom:16px; cursor:pointer; position:relative;
     }
-    .btn:hover {transform:scale(1.05); box-shadow:0 0 25px rgba(0,209,255,0.8);}
-    @keyframes pulse {0%{box-shadow:0 0 10px rgba(0,209,255,0.4);}50%{box-shadow:0 0 20px rgba(0,209,255,0.7);}100%{box-shadow:0 0 10px rgba(0,209,255,0.4);}}
+    .btn:hover { transform:scale(1.05); box-shadow:0 0 25px rgba(0,209,255,0.8); }
+    @keyframes pulse { 0%{box-shadow:0 0 10px rgba(0,209,255,0.4);}50%{box-shadow:0 0 20px rgba(0,209,255,0.7);}100%{box-shadow:0 0 10px rgba(0,209,255,0.4);} }
 
-    /* ===== секретная надпись ===== */
+    /* ===== Секретная надпись ===== */
     .secret {
       margin-top:20px; font-size:16px; color:#ffd700;
-      opacity:0; transition:opacity 1s; z-index:2; position:relative;
+      opacity:0; transition:opacity 1s; position:relative;
     }
     .secret.show { opacity:1; }
 
-    /* ===== ввод желания ===== */
+    /* ===== Ввод желания (скрыт до 9с) ===== */
     .wish-block {
-      margin-top:24px;
-      display:flex; flex-direction:column; align-items:center; gap:10px;
-      opacity:0; transition:opacity .5s ease; z-index:2;
+      margin-top:24px; display:flex; flex-direction:column;
+      align-items:center; gap:10px; opacity:0;
+      transition:opacity .5s ease; position:relative;
     }
     .wish-block.visible { opacity:1; }
     #wishInput {
@@ -113,14 +113,12 @@
     #sendWish {
       padding:10px 20px; font-size:15px; font-weight:700;
       border:2px solid #00d1ff; background:rgba(255,255,255,0.05);
-      color:#00d1ff; border-radius:10px; backdrop-filter:blur(10px);
-      cursor:pointer; transition:all .3s ease;
+      color:#00d1ff; border-radius:10px; cursor:pointer;
+      transition:background .3s;
     }
-    #sendWish:hover {
-      background:rgba(255,255,255,0.1);
-    }
+    #sendWish:hover { background:rgba(255,255,255,0.1); }
 
-    /* ===== анимация желания ===== */
+    /* ===== Анимация улетающего желания ===== */
     .wish-fly {
       position:fixed; left:50%; top:60%;
       transform:translateX(-50%);
@@ -128,19 +126,16 @@
       animation:flyUp 2s ease-out forwards;
       z-index:10; pointer-events:none;
     }
-    @keyframes flyUp {
-      0%   { transform:translateX(-50%) translateY(0); opacity:1; }
-      100% { transform:translateX(-50%) translateY(-300px); opacity:0; }
-    }
+    @keyframes flyUp { 0%{transform:translateX(-50%) translateY(0);opacity:1;} 100%{transform:translateX(-50%) translateY(-300px);opacity:0;} }
 
-    /* ===== warp-анимация контейнера ===== */
+    /* ===== Warp-анимация всего контейнера ===== */
     .warpCont {
       animation:warpZoom 1.2s ease-out forwards;
     }
     @keyframes warpZoom {
-      0%{transform:translateY(0) scale(1) rotateX(0) rotateY(0);opacity:1;}
-      70%{transform:translateY(-50px) scale(1.5) rotateX(10deg) rotateY(10deg);opacity:0.5;}
-      100%{opacity:0;}
+      0%   { transform:translateY(0) scale(1) rotateX(0) rotateY(0); opacity:1; }
+      70%  { transform:translateY(-50px) scale(1.5) rotateX(10deg) rotateY(10deg); opacity:0.5; }
+      100% { opacity:0; }
     }
   </style>
 </head>
@@ -168,72 +163,72 @@
 
     <a href="https://t.me/astropulsereal_bot" class="btn" id="goBtn">Перейти в бот</a>
 
-    <!-- поле для желания, по умолчанию скрыто -->
+    <!-- поле для желания (появится через 9 сек) -->
     <div class="wish-block" id="wishBlock">
       <input type="text" id="wishInput" placeholder="Загадай желание..." maxlength="100"/>
       <button id="sendWish">Загадать желание</button>
     </div>
 
-    <div class="secret" id="secret">
-      Ты — один из тех, кто чувствует вибрации Вселенной. Мы ждём тебя.
-    </div>
+    <div class="secret" id="secret">Ты — один из тех, кто чувствует вибрации Вселенной. Мы ждём тебя.</div>
   </div>
 
   <script>
     // particles.js
     particlesJS('particles', {
       particles: {
-        number:{value:200,density:{enable:true,value_area:800}},
-        color:{value:'#ffffff'}, shape:{type:'circle'},
-        opacity:{value:0.8,random:true}, size:{value:4,random:true},
-        line_linked:{enable:true,distance:150,color:'#444',opacity:0.4,width:1},
-        move:{enable:true,speed:1.2,direction:'center',out_mode:'out'}
+        number: { value:200, density:{ enable:true, value_area:800 } },
+        color: { value:'#ffffff' },
+        shape: { type:'circle' },
+        opacity: { value:0.8, random:true },
+        size: { value:4, random:true },
+        line_linked: { enable:true, distance:150, color:'#444', opacity:0.4, width:1 },
+        move: { enable:true, speed:1.2, direction:'center', out_mode:'out' }
       },
-      interactivity:{detect_on:'canvas',events:{onhover:{enable:false},onclick:{enable:false}}},
+      interactivity:{ detect_on:'canvas', events:{ onhover:{ enable:false }, onclick:{ enable:false } } },
       retina_detect:true
     });
 
-    // Показать блок желания через 9 секунд
+    // показать блок желания через 9 секунд
     setTimeout(()=>{
-      const wb = document.getElementById('wishBlock');
-      wb.classList.add('visible');
+      document.getElementById('wishBlock').classList.add('visible');
     }, 9000);
 
-    // Секретная надпись через 7 сек
+    // показать секретную надпись через 7 секунд
     window.addEventListener('load',()=>{
       setTimeout(()=>{
         document.getElementById('secret').classList.add('show');
       },7000);
     });
 
-    // Warp + редирект
-    document.getElementById('goBtn').addEventListener('click',e=>{
+    // Warp + редирект + warp-анимация всего контейнера
+    document.getElementById('goBtn').addEventListener('click', e=>{
       e.preventDefault();
-      document.getElementById('warpFlash').style.display='block';
-      document.getElementById('particles').style.animationDuration='0.5s';
+      document.getElementById('warpFlash').style.display = 'block';
+      document.getElementById('particles').style.animationDuration = '0.5s';
       document.getElementById('container').classList.add('warpCont');
-      setTimeout(()=> location.href=e.target.href, 1200);
+      setTimeout(()=> location.href = e.target.href, 1200);
     });
 
     // 3D Tilt
     const cont = document.getElementById('container');
-    window.addEventListener('mousemove',e=>{
-      const x=(e.clientX-innerWidth/2)/(innerWidth/2),
-            y=(e.clientY-innerHeight/2)/(innerHeight/2);
+    window.addEventListener('mousemove', e=>{
+      const x = (e.clientX - innerWidth/2)/(innerWidth/2),
+            y = (e.clientY - innerHeight/2)/(innerHeight/2);
       cont.style.transform = `translateY(0) rotateY(${x*5}deg) rotateX(${-y*5}deg)`;
     });
-    window.addEventListener('mouseleave',()=> cont.style.transform='translateY(0) rotateY(0) rotateX(0)');
+    window.addEventListener('mouseleave', ()=> cont.style.transform='translateY(0) rotateY(0) rotateX(0)');
 
-    // Отправка желания
+    // Отправка желания с эффектом на фон и текстом, улетающим в небо
     document.getElementById('sendWish').addEventListener('click', ()=>{
       const text = document.getElementById('wishInput').value.trim();
       if(!text) return;
+
       // фоновый эффект
       const p = document.getElementById('particles');
       p.classList.add('wish-effect');
       setTimeout(()=> p.classList.remove('wish-effect'), 500);
 
-      // анимация улетающего желания
+      // анимация улетающего текста
       const fly = document.createElement('div');
       fly.className = 'wish-fly';
       fly.textContent = text;
