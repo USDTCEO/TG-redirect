@@ -5,154 +5,138 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AstroPulse | Переход в бота</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <style>
-    body {
+    /* Основные стили */
+    body, html {
       margin: 0;
-      font-family: 'Orbitron', sans-serif;
-      background-color: #0e001c;
-      color: #fff;
-      text-align: center;
-      overflow-x: hidden;
-    }
-
-    #particles-js {
-      position: absolute;
-      width: 100%;
+      padding: 0;
       height: 100%;
-      background: radial-gradient(circle at top, #1c003a 0%, #0b0015 100%);
-      z-index: -1;
+      font-family: 'Orbitron', sans-serif;
+      background: #0e001c;
+      overflow: hidden;
+      color: #fff;
     }
 
+    /* Контейнер */
     .container {
       position: relative;
-      padding: 60px 20px;
       z-index: 2;
-      animation: fadeIn 1s ease-in-out forwards;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
     }
 
-    h1 {
-      font-size: 32px;
+    /* Вспышка */
+    .flash {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      z-index: 3;
+      animation: flash 2s forwards;
+    }
+
+    @keyframes flash {
+      0% { opacity: 1; }
+      100% { opacity: 0; display: none; }
+    }
+
+    /* Звёздный фон */
+    .stars {
+      position: fixed;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, #ffffff 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: moveStars 60s linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes moveStars {
+      from { transform: translate(0, 0); }
+      to { transform: translate(-50%, -50%); }
+    }
+
+    /* Бот */
+    .bot {
+      width: 150px;
+      height: 150px;
+      background: url('https://i.imgur.com/1ehjzQq.png') no-repeat center/contain;
+      animation: blink 5s infinite;
       margin-bottom: 20px;
-      color: #c49cff;
-      animation: rise 1.2s ease-out;
     }
 
-    .alert {
-      background: rgba(30, 0, 60, 0.8);
-      border: 2px solid #9146ff;
-      border-radius: 14px;
-      padding: 24px;
-      margin: 30px auto;
-      max-width: 480px;
-      font-size: 16px;
-      color: #fff7d6;
-      animation: fadeInUp 1.4s ease-out;
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
     }
 
-    .alert b {
-      color: #ffd700;
-    }
-
+    /* Кнопка */
     .btn {
-      background: #a570ff;
-      color: white;
-      padding: 14px 32px;
-      font-size: 18px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid #fff;
+      padding: 15px 30px;
       border-radius: 10px;
-      border: none;
+      color: #fff;
       text-decoration: none;
-      cursor: pointer;
-      transition: 0.3s ease;
-      display: inline-block;
-      margin-top: 30px;
-      animation: zoomIn 1.6s ease-out;
+      backdrop-filter: blur(10px);
+      transition: background 0.3s;
     }
 
     .btn:hover {
-      background: #d4a5ff;
-      transform: scale(1.05);
+      background: rgba(255, 255, 255, 0.2);
     }
 
-    .footer {
-      margin-top: 60px;
-      font-size: 13px;
-      color: #777;
-      animation: fadeIn 2s ease-in;
+    /* Секретная надпись */
+    .secret {
+      position: absolute;
+      bottom: 20px;
+      opacity: 0;
+      transition: opacity 1s;
     }
 
-    @keyframes fadeIn {
-      0% { opacity: 0; }
-      100% { opacity: 1; }
+    .secret.show {
+      opacity: 1;
     }
 
-    @keyframes fadeInUp {
-      0% { opacity: 0; transform: translateY(20px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes zoomIn {
-      0% { transform: scale(0.8); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    @keyframes rise {
-      0% { transform: translateY(30px); opacity: 0; }
-      100% { transform: translateY(0); opacity: 1; }
+    /* Анимация при наведении */
+    .container:hover {
+      transform: perspective(1000px) rotateY(5deg);
     }
   </style>
 </head>
 <body>
 
-  <div id="particles-js"></div>
+  <div class="flash"></div>
+  <div class="stars"></div>
 
   <div class="container">
-    <h1>AstroPulse | Перейти в БОТА</h1>
-
-    <div class="alert">
-      <p><b>Внимание:</b> Telegram-ссылки не открываются напрямую в TikTok.</p>
-      <p><b>1.</b> Нажмите <b>три точки (•••)</b> в правом верхнем углу</p>
-      <p><b>2.</b> Выберите <b>«Открыть в браузере»</b></p>
-      <p><b>3.</b> После этого нажмите кнопку ниже:</p>
-    </div>
-
+    <div class="bot"></div>
+    <h1>AstroPulse</h1>
+    <p>Переход в бота</p>
     <a class="btn" href="https://t.me/astropulsereal_bot" target="_blank">Перейти в бота</a>
-
-    <div class="footer">
-      © 2025 AstroPulse — Сделано со звёздами
-    </div>
+    <div class="secret" id="secret">Ты один из тех, кто чувствует вибрации Вселенной. Мы ждали тебя.</div>
   </div>
 
   <script>
-    particlesJS("particles-js", {
-      "particles": {
-        "number": { "value": 100 },
-        "color": { "value": "#ffffff" },
-        "shape": { "type": "circle" },
-        "opacity": {
-          "value": 0.5,
-          "random": true
-        },
-        "size": {
-          "value": 2.5,
-          "random": true
-        },
-        "move": {
-          "enable": true,
-          "speed": 0.6,
-          "direction": "bottom",
-          "straight": false
-        }
-      },
-      "interactivity": {
-        "detect_on": "canvas",
-        "events": {
-          "onhover": { "enable": false },
-          "onclick": { "enable": false }
-        }
-      },
-      "retina_detect": true
-    });
+    // Показываем контент после вспышки
+    window.onload = function() {
+      setTimeout(() => {
+        document.querySelector('.container').style.opacity = 1;
+      }, 2000);
+
+      // Показываем секретную надпись через 7 секунд
+      setTimeout(() => {
+        document.getElementById('secret').classList.add('show');
+      }, 7000);
+    };
   </script>
 
 </body>
