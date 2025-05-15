@@ -1,133 +1,173 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>AstroPulse | Переход в бота</title>
+  <!-- Шрифт в стиле космоса -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+  <!-- Particles.js -->
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <style>
-    /* 1. Базовые стили */
-    * { box-sizing: border-box; }
+    /* === БАЗА === */
+    * { box-sizing: border-box; margin:0; padding:0; }
     body, html {
-      margin: 0; padding: 0;
-      width: 100%; height: 100%;
-      overflow: hidden;
-      font-family: 'Orbitron', sans-serif;
-      background: #000;
-      color: #fff;
-    }
-
-    /* 2. Фон звездного портала */
-    #stars {
-      position: fixed; top:0; left:0;
       width:100%; height:100%;
-      z-index: 1;
+      overflow:hidden;
+      background:#000;
+      font-family:'Orbitron', sans-serif;
+      color:#fff;
+      perspective:1000px;
     }
 
-    /* 3. Основной контейнер поверх звезд */
+    /* === ЗВЁЗДНЫЙ ФОН === */
+    #stars {
+      position:fixed; top:0; left:0;
+      width:200%; height:200%;
+      background: radial-gradient(circle, #fff 1px, transparent 1px);
+      background-size:50px 50px;
+      animation: moveStars 60s linear infinite;
+      z-index:1;
+    }
+    @keyframes moveStars {
+      to { transform: translate(-50%, -50%); }
+    }
+
+    /* === ВСПЫШКА ПРИ ВХОДЕ === */
+    .flash {
+      position:fixed; top:0; left:0;
+      width:100%; height:100%;
+      background:#fff;
+      animation: flashIn 1.5s ease-out forwards;
+      z-index:3;
+    }
+    @keyframes flashIn {
+      0% { opacity:1; }
+      80% { opacity:0; }
+      100% { opacity:0; display:none; }
+    }
+
+    /* === КОНТЕЙНЕР С КОНТЕНТОМ === */
     .container {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 20px;
-      height: 100%;
+      position:relative; z-index:2;
+      width:100%; height:100%;
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      text-align:center;
+      opacity:0;
+      transform: translateY(20px);
+      animation: showContainer 1s ease-out 1.5s forwards;
+    }
+    @keyframes showContainer {
+      0% { opacity:0; transform:translateY(20px); }
+      100% { opacity:1; transform:translateY(0); }
     }
 
-    /* 4. Инструкция */
+    /* === 3D-ПАРАЛЛАКС === */
+    .container:hover {
+      transform: translateY(0) rotateX(5deg) rotateY(5deg);
+    }
+    /* реагирует на движение мыши */
+    .container.tilt {
+      transition: transform 0.1s;
+    }
+
+    /* === БЛОК ИНСТРУКЦИИ === */
     .instruction {
       background: rgba(255,255,255,0.05);
       border: 2px solid #00d1ff;
-      border-radius: 12px;
-      padding: 24px;
-      max-width: 320px;
-      margin-bottom: 30px;
-      line-height: 1.4;
+      border-radius:16px;
+      padding:30px;
+      max-width:360px;
+      margin-bottom:30px;
+      box-shadow: 0 0 20px rgba(0,209,255,0.4);
+      animation: glowBorder 3s ease-in-out infinite alternate;
+    }
+    @keyframes glowBorder {
+      from { box-shadow: 0 0 10px rgba(0,209,255,0.2); }
+      to   { box-shadow: 0 0 30px rgba(0,209,255,0.8); }
     }
     .instruction p {
-      margin: 12px 0;
-      font-size: 20px;
-      font-weight: 500;
-      color: #fff;
+      margin:12px 0;
+      font-size:18px;
+      line-height:1.4;
     }
     .instruction p b {
-      color: #00d1ff;
-      font-size: 22px;
-      font-weight: 700;
+      color:#00d1ff;
+      font-size:20px;
     }
 
-    /* 5. Кнопка в стиле Starlink */
+    /* === КНОПКА === */
     .btn {
-      display: inline-block;
-      padding: 12px 28px;
-      font-size: 18px;
-      font-weight: 700;
-      text-decoration: none;
-      color: #00d1ff;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid #00d1ff;
-      border-radius: 8px;
-      backdrop-filter: blur(8px);
-      transition: background 0.3s, transform 0.3s;
+      padding:14px 32px;
+      font-size:18px; font-weight:700;
+      color:#00d1ff;
+      text-decoration:none;
+      background: rgba(255,255,255,0.1);
+      border:2px solid #00d1ff;
+      border-radius:12px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 0 15px rgba(0,209,255,0.5);
+      transition: transform 0.3s, box-shadow 0.3s;
+      animation: pulseBtn 2s ease-out infinite;
     }
     .btn:hover {
-      background: rgba(255,255,255,0.15);
       transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(0,209,255,0.8);
+    }
+    @keyframes pulseBtn {
+      0% { box-shadow: 0 0 10px rgba(0,209,255,0.4); }
+      50% { box-shadow: 0 0 20px rgba(0,209,255,0.7); }
+      100% { box-shadow: 0 0 10px rgba(0,209,255,0.4); }
     }
 
-    /* 6. Анимация звезд (portal) */
-    @keyframes moveStars {
-      from { transform: translate(0,0); }
-      to   { transform: translate(-50%, -50%); }
-    }
   </style>
 </head>
 <body>
 
+  <!-- вспышка -->
+  <div class="flash"></div>
+
   <!-- фон -->
   <div id="stars"></div>
 
-  <!-- интерфейс -->
-  <div class="container">
+  <!-- контент -->
+  <div class="container" id="container">
     <div class="instruction">
       <p><b>Внимание!</b> TikTok блокирует прямой переход в Telegram.</p>
-      <p>Чтобы открыть ссылку:</p>
+      <p>Чтобы правильно открыть ссылку:</p>
       <p>• Нажми <b>•••</b> в правом верхнем углу</p>
       <p>• Выбери <b>«Открыть в браузере»</b></p>
-      <p>• И только потом нажми кнопку ниже</p>
+      <p>• Только затем нажми кнопку ниже</p>
     </div>
     <a class="btn" href="https://t.me/astropulsereal_bot" target="_blank">Перейти в бот</a>
   </div>
 
-  <!-- particles.js -->
+  <!-- скрипты -->
   <script>
+    // particles.js
     particlesJS('stars', {
       particles: {
-        number: { value: 150, density: { enable: true, value_area: 800 } },
-        color:    { value: '#ffffff' },
-        shape:    { type: 'circle' },
-        opacity:  { value: 0.7, random: true },
-        size:     { value: 3, random: true },
-        move: {
-          enable: true,
-          speed: 1,
-          direction: 'center',
-          straight: false,
-          out_mode: 'out'
-        }
-      },
-      interactivity: {
-        detect_on: 'canvas',
-        events: { onhover: { enable: false }, onclick: { enable: false } }
+        number: { value: 200, density:{ enable:true, value_area:800 }},
+        color: { value:'#ffffff' },
+        shape: { type:'circle' },
+        opacity: { value:0.8, random:true },
+        size: { value:4, random:true },
+        move: { enable:true, speed:1.2, direction:'center', out_mode:'out' }
       },
       retina_detect: true
     });
-    // смещение фона для эффекта «летим в портал»
-    document.getElementById('stars').style.animation = 'moveStars 60s linear infinite';
+
+    // 3D Tilt на мышь
+    const container = document.getElementById('container');
+    window.addEventListener('mousemove', e => {
+      const w = window.innerWidth, h = window.innerHeight;
+      const x = (e.clientX - w/2)/(w/2), y = (e.clientY - h/2)/(h/2);
+      container.style.transform = `rotateY(${x*5}deg) rotateX(${ -y*5 }deg)`;
+    });
+    window.addEventListener('mouseleave', () => {
+      container.style.transform = 'rotateY(0) rotateX(0)';
+    });
   </script>
 
 </body>
