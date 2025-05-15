@@ -1,66 +1,120 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>AstroPulse — Звёздный портал</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AstroPulse | Переход в бота</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <style>
-    /* полный экран, чёрный фон */
+    /* 1. Базовые стили */
+    * { box-sizing: border-box; }
     body, html {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      background: #000;
-      overflow: hidden;
-    }
-    /* контейнер для частиц */
-    #stars {
-      position: absolute;
-      top: 0; left: 0;
+      margin: 0; padding: 0;
       width: 100%; height: 100%;
+      overflow: hidden;
+      font-family: 'Orbitron', sans-serif;
+      background: #000;
+      color: #fff;
+    }
+
+    /* 2. Фон звездного портала */
+    #stars {
+      position: fixed; top:0; left:0;
+      width:100%; height:100%;
       z-index: 1;
     }
-    /* сюда потом накроем остальной интерфейс */
+
+    /* 3. Основной контейнер поверх звезд */
     .container {
       position: relative;
       z-index: 2;
-      /* ещё невидим пока, потом сделаем fade-in */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      height: 100%;
+    }
+
+    /* 4. Инструкция */
+    .instruction {
+      background: rgba(255,255,255,0.05);
+      border: 2px solid #00d1ff;
+      border-radius: 12px;
+      padding: 24px;
+      max-width: 320px;
+      margin-bottom: 30px;
+      line-height: 1.4;
+    }
+    .instruction p {
+      margin: 12px 0;
+      font-size: 20px;
+      font-weight: 500;
+      color: #fff;
+    }
+    .instruction p b {
+      color: #00d1ff;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    /* 5. Кнопка в стиле Starlink */
+    .btn {
+      display: inline-block;
+      padding: 12px 28px;
+      font-size: 18px;
+      font-weight: 700;
+      text-decoration: none;
+      color: #00d1ff;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid #00d1ff;
+      border-radius: 8px;
+      backdrop-filter: blur(8px);
+      transition: background 0.3s, transform 0.3s;
+    }
+    .btn:hover {
+      background: rgba(255,255,255,0.15);
+      transform: scale(1.05);
+    }
+
+    /* 6. Анимация звезд (portal) */
+    @keyframes moveStars {
+      from { transform: translate(0,0); }
+      to   { transform: translate(-50%, -50%); }
     }
   </style>
-  <!-- подключаем particles.js из CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 </head>
 <body>
 
-  <!-- вот наш фон -->
+  <!-- фон -->
   <div id="stars"></div>
 
-  <!-- сюда потом будет твоя кнопка, бот и т.п. -->
+  <!-- интерфейс -->
   <div class="container">
-    <!-- контент появится после вспышки -->
+    <div class="instruction">
+      <p><b>Внимание!</b> TikTok блокирует прямой переход в Telegram.</p>
+      <p>Чтобы открыть ссылку:</p>
+      <p>• Нажми <b>•••</b> в правом верхнем углу</p>
+      <p>• Выбери <b>«Открыть в браузере»</b></p>
+      <p>• И только потом нажми кнопку ниже</p>
+    </div>
+    <a class="btn" href="https://t.me/astropulsereal_bot" target="_blank">Перейти в бот</a>
   </div>
 
+  <!-- particles.js -->
   <script>
-    /* инициализируем портал из звёзд */
     particlesJS('stars', {
       particles: {
-        number: { value: 200, density: { enable: true, value_area: 800 } },
-        color: { value: '#ffffff' },
-        shape: {
-          type: 'circle',
-        },
-        opacity: {
-          value: 0.8,
-          random: true
-        },
-        size: {
-          value: 3,
-          random: true
-        },
+        number: { value: 150, density: { enable: true, value_area: 800 } },
+        color:    { value: '#ffffff' },
+        shape:    { type: 'circle' },
+        opacity:  { value: 0.7, random: true },
+        size:     { value: 3, random: true },
         move: {
           enable: true,
-          speed: 1.5,
+          speed: 1,
           direction: 'center',
           straight: false,
           out_mode: 'out'
@@ -68,13 +122,12 @@
       },
       interactivity: {
         detect_on: 'canvas',
-        events: {
-          onhover: { enable: false },
-          onclick: { enable: false }
-        }
+        events: { onhover: { enable: false }, onclick: { enable: false } }
       },
       retina_detect: true
     });
+    // смещение фона для эффекта «летим в портал»
+    document.getElementById('stars').style.animation = 'moveStars 60s linear infinite';
   </script>
 
 </body>
