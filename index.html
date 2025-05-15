@@ -3,87 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AstroPulse | Переход в Telegram-бота</title>
+  <title>AstroPulse | Бот</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(145deg, #0f1012, #15191d);
-      color: #fff;
+      background: #0f1012;
+      color: white;
       text-align: center;
-      padding: 30px 20px;
+      padding: 40px 20px;
     }
-
     h1 {
-      font-size: 26px;
-      margin-bottom: 12px;
+      font-size: 24px;
       color: #00bcd4;
+      margin-bottom: 16px;
     }
-
     p {
       font-size: 17px;
-      margin-bottom: 18px;
-      line-height: 1.6;
+      margin-bottom: 30px;
     }
-
     a.btn {
-      background-color: #2AABEE;
-      color: #fff;
-      padding: 16px 26px;
-      border-radius: 8px;
+      background: #2AABEE;
+      color: white;
+      padding: 14px 24px;
       font-size: 18px;
       text-decoration: none;
-      display: inline-block;
-      margin-top: 12px;
-    }
-
-    a.btn:hover {
-      background-color: #229fd9;
-    }
-
-    .notice {
-      margin-top: 50px;
-      font-size: 16px;
-      color: #ffcc00;
-      background: #1a1a1a;
       border-radius: 8px;
-      padding: 20px;
-      border: 1px solid #444;
-    }
-
-    .highlight {
-      font-weight: bold;
-      color: #ffffff;
-      font-size: 18px;
-    }
-
-    .emoji {
-      font-size: 22px;
-      vertical-align: middle;
+      display: inline-block;
     }
   </style>
 </head>
 <body>
 
-  <h1>Перейти в AstroPulse Бот</h1>
-  <p>Это наш Telegram-бот. Нажмите кнопку ниже, чтобы открыть его:</p>
+  <h1>AstroPulse Бот</h1>
+  <p>Нажмите кнопку ниже, чтобы перейти к нашему Telegram-боту.</p>
 
-  <a class="btn" href="https://t.me/astropulsereal_bot" target="_blank">Открыть Telegram</a>
-
-  <div class="notice" id="tiktok-warning" style="display: none;">
-    <p class="highlight">ВНИМАНИЕ! Вы открыли ссылку из TikTok.</p>
-    <p>Чтобы всё сработало:</p>
-    <p>
-      1. Нажмите <span class="emoji">•••</span> в правом верхнем углу<br>
-      2. Выберите <span class="highlight">«Открыть в браузере»</span><br>
-      3. После этого кнопка Telegram заработает
-    </p>
-  </div>
-
-  <script>
-    if (navigator.userAgent.toLowerCase().includes('tiktok')) {
-      document.getElementById('tiktok-warning').style.display = 'block';
-    }
-  </script>
+  <a class="btn" href="step2.html">Открыть бота</a>
 
 </body>
 </html>
