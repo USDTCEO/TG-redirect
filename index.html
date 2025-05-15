@@ -3,62 +3,70 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AstroPulse | Перейти в Telegram</title>
+  <title>AstroPulse | Переход в Telegram-бота</title>
   <style>
     body {
-      font-family: 'Arial', sans-serif;
+      font-family: Arial, sans-serif;
       background: linear-gradient(145deg, #0f1012, #15191d);
-      color: #ffffff;
+      color: #fff;
       text-align: center;
-      padding: 40px 20px;
+      padding: 30px;
     }
-    .logo {
-      max-width: 120px;
+    img.logo {
+      width: 120px;
       border-radius: 50%;
       margin-bottom: 20px;
     }
     h1 {
       font-size: 24px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       color: #00bcd4;
     }
     p {
       font-size: 16px;
-      margin-bottom: 25px;
-      line-height: 1.6;
+      margin-bottom: 20px;
     }
-    .btn {
+    a.btn {
       background-color: #2AABEE;
-      color: white;
-      padding: 16px 28px;
-      font-size: 18px;
-      border: none;
+      color: #fff;
+      padding: 16px 26px;
       border-radius: 8px;
-      cursor: pointer;
+      font-size: 18px;
       text-decoration: none;
       display: inline-block;
       margin-top: 10px;
-      transition: background-color 0.3s ease;
     }
-    .btn:hover {
+    a.btn:hover {
       background-color: #229fd9;
     }
-    .tip {
+    .notice {
       margin-top: 40px;
-      font-size: 14px;
-      color: #aaaaaa;
+      font-size: 15px;
+      color: #cccccc;
+      border-top: 1px solid #333;
+      padding-top: 20px;
     }
   </style>
 </head>
 <body>
-  <img class="logo" src="https://i.imgur.com/1ehjzQq.png" alt="AstroPulse Bot">
-  <h1>Перейти в AstroPulse Bot</h1>
-  <p>Нажмите кнопку ниже, чтобы открыть AstroPulse в Telegram.</p>
-  <a class="btn" href="https://t.me/astropulsereal_bot" target="_blank">Открыть Telegram</a>
 
-  <div class="tip">
-    <p><strong>Если вы открыли это из TikTok:</strong></p>
-    <p>Нажмите <b>«Поделиться»</b> внизу → <b>«Открыть в браузере»</b><br>или <b>три точки (•••)</b> → <b>Открыть в Safari / Chrome</b></p>
+  <img class="logo" src="https://i.imgur.com/1ehjzQq.png" alt="AstroPulse Bot">
+  <h1>AstroPulse | Telegram-бот</h1>
+  <p>Это переход в наш Telegram-бот AstroPulse.</p>
+  <p>Нажмите на кнопку ниже, чтобы открыть его:</p>
+
+  <a class="btn" href="https://t.me/astropulsereal_bot" target="_blank">Перейти в бота</a>
+
+  <div class="notice" id="tiktok-warning" style="display: none;">
+    <p><b>Похоже, вы открыли эту страницу из TikTok</b></p>
+    <p>Чтобы перейти в Telegram, нажмите <b>три точки (•••)</b> в правом верхнем углу и выберите<br><b>«Открыть в браузере»</b> (Safari / Chrome)</p>
   </div>
+
+  <script>
+    if (navigator.userAgent.toLowerCase().includes('tiktok')) {
+      document.getElementById('tiktok-warning').style.display = 'block';
+    }
+  </script>
+
 </body>
 </html>
