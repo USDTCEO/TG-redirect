@@ -9,185 +9,209 @@
   <!-- particles.js -->
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <style>
-    /* === Reset & база === */
-    *{box-sizing:border-box;margin:0;padding:0;}
-    body,html{width:100%;height:100%;overflow:hidden;background:#000;color:#fff;
-      font-family:'Orbitron',sans-serif;perspective:1000px;}
-    a{color:inherit;text-decoration:none;}
+    /* ======= Reset & базовые стили ======= */
+    * { box-sizing:border-box; margin:0; padding:0; }
+    html, body { width:100%; height:100%; overflow:hidden; background:#000; color:#fff;
+      font-family:'Orbitron',sans-serif; perspective:1000px; }
+    a { color:inherit; text-decoration:none; }
 
-    /* === Звёздный фон-портал === */
-    #stars {
-      position:fixed; top:0; left:0;
-      width:200%; height:200%;
-      background: radial-gradient(circle,#fff 1px,transparent 1px);
-      background-size:50px 50px;
-      animation:moveStars 60s linear infinite;
-      z-index:1;
+    /* ======= Звёздный фон-сеть ======= */
+    #particles {
+      position:fixed; top:0; left:0; width:100%; height:100%; z-index:1;
+      background: #000;
     }
-    @keyframes moveStars { to{transform:translate(-50%,-50%);} }
 
-    /* === Входная вспышка === */
-    .flash,.warpFlash {
-      position:fixed; top:0; left:0;
-      width:100%; height:100%;
-      background:#fff; z-index:3;
-      display:none;
-      animation:flashIn 0.8s ease-out forwards;
+    /* ======= Вспышка при входе ======= */
+    .flash {
+      position:fixed; top:0; left:0; width:100%; height:100%; background:#fff;
+      z-index:3; animation:flashIn 0.8s ease-out forwards;
     }
-    @keyframes flashIn {0%{opacity:1;}80%{opacity:0;}100%{opacity:0;display:none;}}
+    @keyframes flashIn {
+      0%   { opacity:1; }
+      80%  { opacity:0; }
+      100% { opacity:0; display:none; }
+    }
 
-    /* === Основной контейнер === */
+    /* ======= Контейнер с контентом ======= */
     .container {
       position:relative; z-index:2;
-      width:100%; height:100%;
-      display:flex;flex-direction:column;
-      align-items:center; justify-content:center;
-      text-align:center;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      height:100%; text-align:center;
       opacity:0; transform:translateY(20px);
-      animation:showContainer 0.8s ease-out 0.8s forwards;
-      transition:transform 0.1s;
+      animation:showUp 0.8s ease-out 0.8s forwards;
     }
-    @keyframes showContainer {
-      from{opacity:0;transform:translateY(20px);} 
-      to{opacity:1;transform:translateY(0);}
+    @keyframes showUp {
+      to { opacity:1; transform:translateY(0); }
     }
 
-    /* 3D-параллакс */
-    .tilt {
-      will-change: transform;
-    }
-
-    /* === Живой бот === */
+    /* ======= 3D-tilt ======= */
+    .container { transition:transform .1s; }
+    
+    /* ======= Живой бот (Emoji) ======= */
     .bot {
-      width:140px; height:140px;
-      background:url('https://i.imgur.com/1ehjzQq.png') center/contain no-repeat;
+      font-size: 120px;
+      margin-bottom: 24px;
       animation:botBreath 3s ease-in-out infinite, botBlink 5s ease-in-out infinite;
-      margin-bottom:24px;
     }
-    @keyframes botBreath {0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
-    @keyframes botBlink  {0%,50%,100%{opacity:1;}45%,55%{opacity:0.4;}}
+    @keyframes botBreath {
+      0%,100% { transform: scale(1); }
+      50%     { transform: scale(1.05); }
+    }
+    @keyframes botBlink {
+      0%,20%,50%,70%,100% { opacity:1; }
+      25%, 65%            { opacity:0.4; }
+    }
 
-    /* === Инструкция (glass neon) === */
+    /* ======= Инструкция (glass + neon) ======= */
     .instruction {
-      background:rgba(255,255,255,0.05);
-      border:2px solid #00d1ff;
-      border-radius:16px;
-      padding:28px;
-      max-width:360px;
-      margin-bottom:30px;
-      box-shadow:0 0 20px rgba(0,209,255,0.4);
-      animation:glowBorder 3s ease-in-out infinite alternate;
+      background: rgba(255,255,255,0.05);
+      border: 2px solid #00d1ff;
+      border-radius: 16px;
+      padding: 28px;
+      max-width: 360px;
+      margin-bottom: 30px;
+      box-shadow: 0 0 20px rgba(0,209,255,0.4);
+      animation:glow 3s ease-in-out infinite alternate;
     }
-    @keyframes glowBorder {
-      from{box-shadow:0 0 10px rgba(0,209,255,0.2);}
-      to{box-shadow:0 0 30px rgba(0,209,255,0.8);}
+    @keyframes glow {
+      from { box-shadow: 0 0 10px rgba(0,209,255,0.2); }
+      to   { box-shadow: 0 0 30px rgba(0,209,255,0.8); }
     }
     .instruction p {
-      margin:12px 0;
-      font-size:18px; line-height:1.4;
+      font-size: 18px;
+      line-height: 1.4;
+      margin: 12px 0;
     }
-    .instruction p b {color:#00d1ff;font-size:20px;}
+    .instruction p b {
+      color: #00d1ff;
+      font-size: 20px;
+    }
 
-    /* === Glass-кнопка === */
+    /* ======= Glass-кнопка ======= */
     .btn {
-      padding:14px 36px;
-      font-size:18px;font-weight:700;
-      color:#00d1ff;
-      background:rgba(255,255,255,0.08);
-      border:2px solid #00d1ff;
-      border-radius:12px;
-      backdrop-filter:blur(12px);
-      box-shadow:0 0 15px rgba(0,209,255,0.5);
-      transition:transform .3s,box-shadow .3s;
-      animation:pulseBtn 2s ease-out infinite;
+      padding: 14px 36px;
+      font-size: 18px; font-weight:700;
+      color: #00d1ff;
+      background: rgba(255,255,255,0.1);
+      border: 2px solid #00d1ff;
+      border-radius: 12px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 0 15px rgba(0,209,255,0.5);
+      transition: transform .3s, box-shadow .3s;
+      animation: pulse 2s ease-out infinite;
       position:relative;
       z-index:2;
     }
     .btn:hover {
-      transform:scale(1.05);
-      box-shadow:0 0 25px rgba(0,209,255,0.8);
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(0,209,255,0.8);
     }
-    @keyframes pulseBtn {
-      0%{box-shadow:0 0 10px rgba(0,209,255,0.4);}
-      50%{box-shadow:0 0 20px rgba(0,209,255,0.7);}
-      100%{box-shadow:0 0 10px rgba(0,209,255,0.4);}
+    @keyframes pulse {
+      0%   { box-shadow:0 0 10px rgba(0,209,255,0.4); }
+      50%  { box-shadow:0 0 20px rgba(0,209,255,0.7); }
+      100% { box-shadow:0 0 10px rgba(0,209,255,0.4); }
     }
 
-    /* === Секретная надпись === */
+    /* ======= Секретная надпись через 7 сек ======= */
     .secret {
-      margin-top:30px;
-      font-size:16px; color:#ffd700;
-      opacity:0; transition:opacity 1s;
+      margin-top: 30px;
+      font-size: 16px; color: #ffd700;
+      opacity: 0; transition: opacity 1s;
     }
-    .secret.show {opacity:1;}
+    .secret.show { opacity: 1; }
 
-    /* === Warp-эффект при клике === */
-    #stars.warp { animation-duration:0.5s !important; }
+    /* ======= Warp-вспышка ======= */
+    .warp {
+      animation: warpFlash 1s ease-out forwards;
+    }
+    @keyframes warpFlash {
+      0% { opacity: 0; }
+      50% { opacity: 1; }
+      100% { opacity: 0; display: none; }
+    }
   </style>
 </head>
 <body>
 
-  <!-- вспышки -->
+  <!-- стартовая вспышка -->
   <div class="flash"></div>
-  <div class="warpFlash"></div>
+  <!-- вторая (warp) вспышка -->
+  <div class="flash warp" id="warpFlash"></div>
 
-  <!-- звёздный фон -->
-  <div id="stars"></div>
+  <!-- фон -->
+  <div id="particles"></div>
 
   <!-- контент -->
   <div class="container tilt" id="container">
-    <div class="bot"></div>
+    <div class="bot">🤖</div>
 
     <div class="instruction">
-      <p><b>Внимание!</b> TikTok блокирует переход в Telegram.</p>
-      <p>Чтобы открыть ссылку:</p>
-      <p>• Нажми <b>•••</b> (правый верхний угол)</p>
-      <p>• Выбери <b>«Открыть в браузере»</b></p>
-      <p>• И только потом нажми кнопку</p>
+      <p><b>Внимание!</b> TikTok блокирует прямой переход в Telegram.</p>
+      <p>Чтобы всё работало:</p>
+      <p>• Нажмите <b>•••</b> (правый верхний угол)</p>
+      <p>• Выберите <b>«Открыть в браузере»</b></p>
+      <p>• И только потом нажмите кнопку</p>
     </div>
 
     <a href="https://t.me/astropulsereal_bot" class="btn" id="goBtn">Перейти в бот</a>
-
-    <div class="secret" id="secret">
-      Ты — один из тех, кто чувствует вибрации Вселенной. Мы ждали тебя.
-    </div>
+    <div class="secret" id="secret">Ты — один из тех, кто чувствует вибрации Вселенной. Мы ждали тебя.</div>
   </div>
 
   <script>
-    // 1) particles.js
-    particlesJS('stars', {
-      particles:{ number:{value:200,density:{enable:true,value_area:800}},
-        color:{value:'#ffffff'},shape:{type:'circle'},
-        opacity:{value:0.8,random:true},size:{value:4,random:true},
-        move:{enable:true,speed:1.2,direction:'center',out_mode:'out'}},
-      retina_detect:true
+    // 1) particles.js: сеть звёзд
+    particlesJS('particles', {
+      particles: {
+        number: { value: 200, density:{ enable:true, value_area:800 }},
+        color: { value:'#ffffff' },
+        shape: { type:'circle' },
+        opacity: { value:0.8, random:true },
+        size: { value:4, random:true },
+        line_linked: {
+          enable: true,
+          distance: 150,
+          color: '#444',
+          opacity: 0.4,
+          width: 1
+        },
+        move: { enable:true, speed:1.2, direction:'center', out_mode:'out' }
+      },
+      interactivity: {
+        detect_on: 'canvas',
+        events: { onhover:{ enable:false }, onclick:{ enable:false } }
+      },
+      retina_detect: true
     });
 
-    // 2) стартовая вспышка
-    window.onload = ()=>{
-      document.querySelector('.flash').style.display='block';
-      setTimeout(()=>{ document.querySelector('.container').style.opacity=1; },800);
-      // секрет
-      setTimeout(()=>{ document.getElementById('secret').classList.add('show'); },7000);
-    };
+    // 2) появление контента + секрет
+    window.addEventListener('load', ()=>{
+      // контент покажем по keyframes showUp
+      // секретная надпись
+      setTimeout(()=>{
+        document.getElementById('secret').classList.add('show');
+      }, 7000);
+    });
 
-    // 3) Warp + редирект
+    // 3) Warp-эффект при переходе
     document.getElementById('goBtn').addEventListener('click', e=>{
       e.preventDefault();
-      // ускоряем звёзды + показываем warpFlash
-      document.getElementById('stars').classList.add('warp');
-      document.querySelector('.warpFlash').style.display='block';
-      setTimeout(()=>{ window.location = e.target.href; },2000);
+      // покажем warp-flash
+      const wf = document.getElementById('warpFlash');
+      wf.style.display = 'block';
+      wf.classList.add('warp');
+      // ускоряем звёздный фон
+      document.getElementById('particles').style.animationDuration = '0.5s';
+      // редирект через 1.2 с
+      setTimeout(()=> location.href = e.target.href, 1200);
     });
 
-    // 4) Tilt-эффект
-    const container = document.getElementById('container');
+    // 4) 3D-tilt на движение мыши
+    const cont = document.getElementById('container');
     window.addEventListener('mousemove', e=>{
       const x = (e.clientX - innerWidth/2)/(innerWidth/2);
       const y = (e.clientY - innerHeight/2)/(innerHeight/2);
-      container.style.transform = `rotateY(${x*5}deg) rotateX(${ -y*5 }deg)`;
+      cont.style.transform = `translateY(0) rotateY(${x*5}deg) rotateX(${-y*5}deg)`;
     });
-    window.addEventListener('mouseleave', ()=> container.style.transform='rotateY(0) rotateX(0)');
+    window.addEventListener('mouseleave', ()=> cont.style.transform='translateY(0) rotateY(0) rotateX(0)');
   </script>
 </body>
 </html>
