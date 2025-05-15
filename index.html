@@ -1,142 +1,80 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AstroPulse | Переход в бота</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>AstroPulse — Звёздный портал</title>
   <style>
-    /* Основные стили */
+    /* полный экран, чёрный фон */
     body, html {
       margin: 0;
       padding: 0;
+      width: 100%;
       height: 100%;
-      font-family: 'Orbitron', sans-serif;
-      background: #0e001c;
+      background: #000;
       overflow: hidden;
-      color: #fff;
     }
-
-    /* Контейнер */
+    /* контейнер для частиц */
+    #stars {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 1;
+    }
+    /* сюда потом накроем остальной интерфейс */
     .container {
       position: relative;
       z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-      text-align: center;
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
-    }
-
-    /* Вспышка */
-    .flash {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: white;
-      z-index: 3;
-      animation: flash 2s forwards;
-    }
-
-    @keyframes flash {
-      0% { opacity: 1; }
-      100% { opacity: 0; display: none; }
-    }
-
-    /* Звёздный фон */
-    .stars {
-      position: fixed;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, #ffffff 1px, transparent 1px);
-      background-size: 50px 50px;
-      animation: moveStars 60s linear infinite;
-      z-index: 1;
-    }
-
-    @keyframes moveStars {
-      from { transform: translate(0, 0); }
-      to { transform: translate(-50%, -50%); }
-    }
-
-    /* Бот */
-    .bot {
-      width: 150px;
-      height: 150px;
-      background: url('https://i.imgur.com/1ehjzQq.png') no-repeat center/contain;
-      animation: blink 5s infinite;
-      margin-bottom: 20px;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-
-    /* Кнопка */
-    .btn {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid #fff;
-      padding: 15px 30px;
-      border-radius: 10px;
-      color: #fff;
-      text-decoration: none;
-      backdrop-filter: blur(10px);
-      transition: background 0.3s;
-    }
-
-    .btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    /* Секретная надпись */
-    .secret {
-      position: absolute;
-      bottom: 20px;
-      opacity: 0;
-      transition: opacity 1s;
-    }
-
-    .secret.show {
-      opacity: 1;
-    }
-
-    /* Анимация при наведении */
-    .container:hover {
-      transform: perspective(1000px) rotateY(5deg);
+      /* ещё невидим пока, потом сделаем fade-in */
     }
   </style>
+  <!-- подключаем particles.js из CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 </head>
 <body>
 
-  <div class="flash"></div>
-  <div class="stars"></div>
+  <!-- вот наш фон -->
+  <div id="stars"></div>
 
+  <!-- сюда потом будет твоя кнопка, бот и т.п. -->
   <div class="container">
-    <div class="bot"></div>
-    <h1>AstroPulse</h1>
-    <p>Переход в бота</p>
-    <a class="btn" href="https://t.me/astropulsereal_bot" target="_blank">Перейти в бота</a>
-    <div class="secret" id="secret">Ты один из тех, кто чувствует вибрации Вселенной. Мы ждали тебя.</div>
+    <!-- контент появится после вспышки -->
   </div>
 
   <script>
-    // Показываем контент после вспышки
-    window.onload = function() {
-      setTimeout(() => {
-        document.querySelector('.container').style.opacity = 1;
-      }, 2000);
-
-      // Показываем секретную надпись через 7 секунд
-      setTimeout(() => {
-        document.getElementById('secret').classList.add('show');
-      }, 7000);
-    };
+    /* инициализируем портал из звёзд */
+    particlesJS('stars', {
+      particles: {
+        number: { value: 200, density: { enable: true, value_area: 800 } },
+        color: { value: '#ffffff' },
+        shape: {
+          type: 'circle',
+        },
+        opacity: {
+          value: 0.8,
+          random: true
+        },
+        size: {
+          value: 3,
+          random: true
+        },
+        move: {
+          enable: true,
+          speed: 1.5,
+          direction: 'center',
+          straight: false,
+          out_mode: 'out'
+        }
+      },
+      interactivity: {
+        detect_on: 'canvas',
+        events: {
+          onhover: { enable: false },
+          onclick: { enable: false }
+        }
+      },
+      retina_detect: true
+    });
   </script>
 
 </body>
