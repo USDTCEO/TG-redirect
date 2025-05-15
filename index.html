@@ -6,276 +6,192 @@
   <title>AstroPulse | Переход в бота</title>
   <!-- Космический шрифт -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet"/>
-  <!-- Three.js для 3D Земли -->
-  <script src="https://unpkg.com/three@0.152.2/build/three.min.js"></script>
-  <!-- particles.js для звёзд -->
+  <!-- particles.js -->
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-
   <style>
-    /* ====== Reset & базовые стили ====== */
-    * { box-sizing:border-box; margin:0; padding:0; }
+    /* ===== Reset & базовые стили ===== */
+    *{box-sizing:border-box;margin:0;padding:0;}
     html, body {
       width:100%; height:100%; overflow:hidden;
       background:#000; color:#fff;
       font-family:'Orbitron',sans-serif;
       perspective:1000px;
     }
-    a { color:inherit; text-decoration:none; }
+    a{color:inherit;text-decoration:none;}
 
-    /* ====== Nebula фон (под звёздами) ====== */
-    #nebula {
-      position:fixed; top:0; left:0;
-      width:100%; height:100%;
-      background: radial-gradient(ellipse at bottom, #19001f 0%, #000 80%);
-      z-index:0;
-      opacity:0.6;
-      animation:nebulaPulse 20s ease-in-out infinite alternate;
-    }
-    @keyframes nebulaPulse {
-      from { opacity:0.5; transform:scale(1); }
-      to   { opacity:0.8; transform:scale(1.02); }
-    }
-
-    /* ====== particles.js: звёздный портал ====== */
+    /* ===== звёздный фон-портал ===== */
     #particles {
       position:fixed; top:0; left:0;
-      width:100%; height:100%;
+      width:200%; height:200%;
+      background: radial-gradient(circle,#fff 1px,transparent 1px);
+      background-size:50px 50px;
+      animation:moveStars 60s linear infinite;
       z-index:1;
     }
-    @keyframes moveStars {
-      to { transform:translate(-50%,-50%); }
-    }
+    @keyframes moveStars { to { transform:translate(-50%,-50%); } }
 
-    /* ====== Three.js canvas ====== */
-    #threejs {
-      position:fixed; top:0; left:0;
-      width:100%; height:100%;
-      z-index:2;
-    }
-
-    /* ====== Вспышки ====== */
+    /* ===== вспышки ===== */
     .flash, .warpFlash {
       position:fixed; top:0; left:0;
-      width:100%; height:100%; background:#fff;
-      display:none; z-index:5;
+      width:100%; height:100%;
+      background:#fff; display:none; z-index:3;
     }
-    .flash { animation:flashIn .7s ease-out forwards; display:block; }
-    .warpFlash { animation:flashIn .5s ease-out forwards; }
+    .flash { animation:flashIn 0.8s ease-out forwards; display:block; }
+    .warpFlash { animation:flashIn 0.6s ease-out forwards; }
     @keyframes flashIn {
       0%{opacity:1;} 80%{opacity:0;} 100%{opacity:0;display:none;}
     }
 
-    /* ====== Контейнер UI ====== */
+    /* ===== основной контейнер ===== */
     .container {
-      position:relative; z-index:6;
+      position:relative; z-index:2;
       display:flex; flex-direction:column;
       align-items:center; justify-content:center;
       height:100%; text-align:center;
-      opacity:0; transform:translateY(30px);
-      animation:containerIn .8s ease-out .7s forwards;
+      opacity:0; transform:translateY(20px);
+      animation:showUp 0.8s ease-out 0.8s forwards;
       transition:transform .1s;
     }
-    @keyframes containerIn {
+    @keyframes showUp {
       to { opacity:1; transform:translateY(0); }
     }
 
-    /* ====== 3D-tilt ====== */
+    /* ===== 3D tilt ===== */
     .container { will-change:transform; }
 
-    /* ====== Живой бот ====== */
+    /* ===== живой бот (Emoji) ===== */
     .bot {
-      font-size:120px; margin-bottom:20px;
-      animation:botPulse 3s ease-in-out infinite, botBlink 5s ease-in-out infinite;
+      font-size:120px; margin-bottom:24px;
+      animation:botBreath 3s ease-in-out infinite,
+                 botBlink 5s ease-in-out infinite;
     }
-    @keyframes botPulse {0%,100%{transform:scale(1);}50%{transform:scale(1.1);}}
-    @keyframes botBlink {0%,20%,50%,70%,100%{opacity:1;}30%,65%{opacity:0.4;}}
+    @keyframes botBreath {0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+    @keyframes botBlink  {0%,20%,50%,70%,100%{opacity:1;}25%,65%{opacity:0.4;}}
 
-    /* ====== Инструкция ====== */
+    /* ===== инструкция (glass + neon) ===== */
     .instruction {
-      background:rgba(0,0,0,0.4);
-      border:2px solid rgba(0,209,255,0.6);
-      border-radius:16px;
-      padding:24px;
-      max-width:360px;
-      margin-bottom:30px;
+      background:rgba(255,255,255,0.05);
+      border:2px solid #00d1ff; border-radius:16px;
+      padding:28px; max-width:360px; margin-bottom:30px;
       box-shadow:0 0 20px rgba(0,209,255,0.4);
-      animation:glowBorder 3s ease-in-out infinite alternate;
+      animation:glow 3s ease-in-out infinite alternate;
     }
-    @keyframes glowBorder {
+    @keyframes glow {
       from{box-shadow:0 0 10px rgba(0,209,255,0.2);}
-      to{box-shadow:0 0 30px rgba(0,209,255,0.8);}
+      to  {box-shadow:0 0 30px rgba(0,209,255,0.8);}
     }
-    .instruction p {
-      margin:10px 0;font-size:18px;line-height:1.4;
-    }
-    .instruction p b {
-      color:#00d1ff;font-size:20px;
-    }
+    .instruction p { font-size:18px; line-height:1.4; margin:12px 0; }
+    .instruction p b { color:#00d1ff; font-size:20px; }
 
-    /* ====== Glass-кнопка ====== */
+    /* ===== glass-кнопка ===== */
     .btn {
-      padding:14px 40px;font-size:18px;font-weight:700;
-      background:rgba(255,255,255,0.1);
-      border:2px solid #00d1ff;border-radius:12px;
+      padding:14px 36px; font-size:18px; font-weight:700;
+      color:#00d1ff; background:rgba(255,255,255,0.1);
+      border:2px solid #00d1ff; border-radius:12px;
       backdrop-filter:blur(12px);
       box-shadow:0 0 15px rgba(0,209,255,0.5);
       transition:transform .3s,box-shadow .3s;
-      animation:btnPulse 2s ease-out infinite;
-      z-index:6;
+      animation:pulse 2s ease-out infinite;
+      position:relative; z-index:2;
     }
     .btn:hover {
       transform:scale(1.05);
       box-shadow:0 0 25px rgba(0,209,255,0.8);
     }
-    @keyframes btnPulse {
-      0%{box-shadow:0 0 10px rgba(0,209,255,0.3);}
-      50%{box-shadow:0 0 20px rgba(0,209,255,0.6);}
-      100%{box-shadow:0 0 10px rgba(0,209,255,0.3);}
+    @keyframes pulse {
+      0%{box-shadow:0 0 10px rgba(0,209,255,0.4);}
+      50%{box-shadow:0 0 20px rgba(0,209,255,0.7);}
+      100%{box-shadow:0 0 10px rgba(0,209,255,0.4);}
     }
 
-    /* ====== Секретный текст ====== */
+    /* ===== секретная надпись ===== */
     .secret {
-      margin-top:30px;font-size:16px;color:#ffd700;
-      opacity:0;transition:opacity 1s;font-style:italic;
+      margin-top:30px; font-size:16px; color:#ffd700;
+      opacity:0; transition:opacity 1s;
     }
     .secret.show { opacity:1; }
 
-    /* ====== Warp Zoom ====== */
+    /* ===== warp-анимация контейнера ===== */
     .warpCont {
       animation:warpZoom 1.2s ease-out forwards;
     }
     @keyframes warpZoom {
-      0%{transform:scale(1) rotateX(0) rotateY(0);opacity:1;}
-      60%{transform:scale(1.8) rotateX(10deg) rotateY(10deg);opacity:0.5;}
-      100%{opacity:0;}
+      0%   { transform:translateY(0) scale(1) rotateX(0) rotateY(0); opacity:1; }
+      70%  { transform:translateY(-50px) scale(1.5) rotateX(10deg) rotateY(10deg); opacity:0.5; }
+      100% { opacity:0; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Подложки и вспышки -->
-  <div id="nebula"></div>
-  <div id="particles"></div>
-  <canvas id="threejs"></canvas>
+  <!-- начальная flash -->
   <div class="flash"></div>
+  <!-- warp flash -->
   <div class="warpFlash" id="warpFlash"></div>
 
-  <!-- UI-контент -->
+  <!-- звёздный фон -->
+  <div id="particles"></div>
+
+  <!-- контент -->
   <div class="container tilt" id="container">
     <div class="bot">🤖</div>
+
     <div class="instruction">
       <p><b>Внимание!</b> TikTok блокирует переход в Telegram.</p>
-      <p>Чтобы открыть ссылку:</p>
-      <p>• Нажмите <b>•••</b> (правый верхний угол)</p>
-      <p>• Выберите <b>«Открыть в браузере»</b></p>
-      <p>• И только потом нажмите кнопку</p>
+      <p>Чтобы всё работало:</p>
+      <p>• Нажми <b>•••</b> (правый верхний угол)</p>
+      <p>• Выбери <b>«Открыть в браузере»</b></p>
+      <p>• И только потом нажми кнопку</p>
     </div>
+
     <a href="https://t.me/astropulsereal_bot" class="btn" id="goBtn">Перейти в бот</a>
-    <div class="secret" id="secret">
-      Ты — один из тех, кто чувствует вибрации Вселенной. Мы ждали тебя.
-    </div>
+    <div class="secret" id="secret">Ты — один из тех, кто чувствует вибрации Вселенной. Мы ждём тебя.</div>
   </div>
 
   <script>
-    // 1) particles.js: звёздный портал
+    // 1) particles.js: сеть звёзд
     particlesJS('particles', {
       particles: {
-        number: { value:220, density:{ enable:true, value_area:800 }},
-        color: { value:'#ffffff' },
-        shape: { type:'circle' },
-        opacity: { value:0.7, random:true },
-        size: { value:3, random:true },
-        line_linked: { enable:true, distance:130, color:'#444', opacity:0.3, width:1 },
-        move: { enable:true, speed:1.1, direction:'center', out_mode:'out' }
+        number:{value:200,density:{enable:true,value_area:800}},
+        color:{value:'#ffffff'},
+        shape:{type:'circle'},
+        opacity:{value:0.8,random:true},
+        size:{value:4,random:true},
+        line_linked:{enable:true,distance:150,color:'#444',opacity:0.4,width:1},
+        move:{enable:true,speed:1.2,direction:'center',out_mode:'out'}
       },
-      interactivity:{ detect_on:'canvas', events:{ onhover:{ enable:false }, onclick:{ enable:false }}},
+      interactivity:{detect_on:'canvas',events:{onhover:{enable:false},onclick:{enable:false}}},
       retina_detect:true
     });
 
-    // 2) Three.js: реалистичная Земля
-    (function(){
-      const canvas = document.getElementById('threejs'),
-            renderer = new THREE.WebGLRenderer({ canvas, alpha:true, antialias:true }),
-            scene = new THREE.Scene(),
-            camera = new THREE.PerspectiveCamera(45, innerWidth/innerHeight, 0.1, 1000);
-      renderer.setSize(innerWidth, innerHeight);
-      camera.position.z = 2.5;
-
-      // освещение
-      const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 1.2);
-      scene.add(hemiLight);
-      const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
-      dirLight.position.set(5,3,5);
-      scene.add(dirLight);
-
-      // загрузчик текстур
-      const loader = new THREE.TextureLoader();
-      const earthMap   = loader.load('https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg');
-      const bumpMap    = loader.load('https://threejs.org/examples/textures/planets/earth_bump_1024.jpg');
-      const specMap    = loader.load('https://threejs.org/examples/textures/planets/earth_specular_2048.jpg');
-      const cloudMap   = loader.load('https://threejs.org/examples/textures/planets/earth_clouds_1024.png');
-
-      // земля
-      const geom = new THREE.SphereGeometry(0.65, 64, 64);
-      const mat  = new THREE.MeshPhongMaterial({
-        map: earthMap,
-        bumpMap: bumpMap, bumpScale:0.04,
-        specularMap: specMap,
-        specular: new THREE.Color('grey')
-      });
-      const earth = new THREE.Mesh(geom, mat);
-      scene.add(earth);
-
-      // облака
-      const cloudMat = new THREE.MeshLambertMaterial({
-        map: cloudMap, transparent:true, opacity:0.6
-      });
-      const clouds = new THREE.Mesh(geom.clone(), cloudMat);
-      clouds.scale.set(1.01,1.01,1.01);
-      scene.add(clouds);
-
-      // анимация
-      function animate(){
-        requestAnimationFrame(animate);
-        earth.rotation.y  += 0.0008;
-        clouds.rotation.y += 0.001;
-        renderer.render(scene, camera);
-      }
-      animate();
-
-      // ресайз
-      window.addEventListener('resize',()=>{
-        camera.aspect = innerWidth/innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(innerWidth, innerHeight);
-      });
-    })();
-
-    // 3) Появление секрета через 7 сек
-    window.addEventListener('load', ()=>{
-      setTimeout(()=> document.getElementById('secret').classList.add('show'), 7000);
+    // 2) при загрузке: показываем секретную надпись через 7 сек
+    window.addEventListener('load',()=>{
+      setTimeout(()=>{
+        document.getElementById('secret').classList.add('show');
+      },7000);
     });
 
-    // 4) Warp + редирект
-    document.getElementById('goBtn').addEventListener('click', e=>{
+    // 3) Warp + редирект
+    document.getElementById('goBtn').addEventListener('click',e=>{
       e.preventDefault();
+      // flash
       document.getElementById('warpFlash').style.display='block';
-      document.getElementById('particles').style.animationDuration='0.4s';
+      // ускоряем фон
+      document.getElementById('particles').style.animationDuration='0.5s';
+      // запускаем warp-анимацию контейнера
       document.getElementById('container').classList.add('warpCont');
-      setTimeout(()=> window.location = e.target.href, 1300);
+      // редирект
+      setTimeout(()=> location.href=e.target.href, 1200);
     });
 
-    // 5) 3D-tilt (мышь + устройство)
-    const cont = document.getElementById('container');
-    window.addEventListener('mousemove', e=>{
-      const x = (e.clientX - innerWidth/2)/(innerWidth/2),
-            y = (e.clientY - innerHeight/2)/(innerHeight/2);
-      cont.style.transform = `rotateY(${x*6}deg) rotateX(${-y*6}deg)`;
+    // 4) 3D Tilt на движение мыши
+    const cont=document.getElementById('container');
+    window.addEventListener('mousemove',e=>{
+      const x=(e.clientX-innerWidth/2)/(innerWidth/2),
+            y=(e.clientY-innerHeight/2)/(innerHeight/2);
+      cont.style.transform=`translateY(0) rotateY(${x*5}deg) rotateX(${-y*5}deg)`;
     });
-    window.addEventListener('deviceorientation', e=>{
-      const x = e.gamma/45, y = e.beta/45;
-      cont.style.transform = `rotateY(${x*6}deg) rotateX(${-y*6}deg)`;
-    });
+    window.addEventListener('mouseleave',()=>cont.style.transform='translateY(0) rotateY(0) rotateX(0)');
   </script>
 </body>
 </html>
