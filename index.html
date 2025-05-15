@@ -1,197 +1,232 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta charset="utf-8">
   <title>AstroPulse | Переход в бота</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <!-- Космический шрифт -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet"/>
-  <!-- particles.js -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Three.js для 3D -->
+  <script src="https://unpkg.com/three@0.152.2/build/three.min.js"></script>
+  <!-- Particles.js для частиц -->
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <style>
-    /* ===== Reset & базовые стили ===== */
-    *{box-sizing:border-box;margin:0;padding:0;}
-    html, body {
-      width:100%; height:100%; overflow:hidden;
-      background:#000; color:#fff;
-      font-family:'Orbitron',sans-serif;
-      perspective:1000px;
-    }
-    a{color:inherit;text-decoration:none;}
+  /* ====== RESET ====== */
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html, body { width:100%; height:100%; overflow:hidden; background:#000; color:#fff; font-family:'Orbitron',sans-serif; perspective:1000px; }
 
-    /* ===== звёздный фон-портал ===== */
-    #particles {
-      position:fixed; top:0; left:0;
-      width:200%; height:200%;
-      background: radial-gradient(circle,#fff 1px,transparent 1px);
-      background-size:50px 50px;
-      animation:moveStars 60s linear infinite;
-      z-index:1;
-    }
-    @keyframes moveStars { to { transform:translate(-50%,-50%); } }
+  /* ====== SCROLLBAR ====== */
+  ::-webkit-scrollbar { width:8px; }
+  ::-webkit-scrollbar-thumb { background:rgba(0,209,255,0.5); border-radius:4px; }
+  ::-webkit-scrollbar-track { background:rgba(255,255,255,0.05); }
 
-    /* ===== вспышки ===== */
-    .flash, .warpFlash {
-      position:fixed; top:0; left:0;
-      width:100%; height:100%;
-      background:#fff; display:none; z-index:3;
-    }
-    .flash { animation:flashIn 0.8s ease-out forwards; display:block; }
-    .warpFlash { animation:flashIn 0.6s ease-out forwards; }
-    @keyframes flashIn {
-      0%{opacity:1;} 80%{opacity:0;} 100%{opacity:0;display:none;}
-    }
+  /* ====== ФОН НЕБУЛА + ЧАСТИЦЫ ====== */
+  #nebula {
+    position:fixed;top:0;left:0;width:100%;height:100%;
+    background:radial-gradient(circle at bottom, #19001f 0%, #000 80%), url('https://i.imgur.com/3Wg5a6R.jpg') center/cover no-repeat;
+    mix-blend-mode:lighten;
+    opacity:0.6;
+    z-index:0;
+    animation:nebulaPulse 20s ease-in-out infinite alternate;
+  }
+  @keyframes nebulaPulse {
+    from { opacity:0.5; transform:scale(1); }
+    to   { opacity:0.8; transform:scale(1.02); }
+  }
+  #particles, #threejs {
+    position:fixed;top:0;left:0;width:100%;height:100%; z-index:1;
+  }
 
-    /* ===== основной контейнер ===== */
-    .container {
-      position:relative; z-index:2;
-      display:flex; flex-direction:column;
-      align-items:center; justify-content:center;
-      height:100%; text-align:center;
-      opacity:0; transform:translateY(20px);
-      animation:showUp 0.8s ease-out 0.8s forwards;
-      transition:transform .1s;
-    }
-    @keyframes showUp {
-      to { opacity:1; transform:translateY(0); }
-    }
+  /* ====== FLASH & WARP FLASH ====== */
+  .flash, .warpFlash {
+    position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;display:none;z-index:5;
+  }
+  .flash { animation:flashAnim .7s ease-out forwards; display:block; }
+  .warpFlash { animation:warpFlashAnim .5s ease-out forwards; }
+  @keyframes flashAnim {0%{opacity:1;}80%{opacity:0;}100%{opacity:0;display:none;}}
+  @keyframes warpFlashAnim {0%{opacity:0;}50%{opacity:1;}100%{opacity:0;display:none;}}
 
-    /* ===== 3D tilt ===== */
-    .container { will-change:transform; }
+  /* ====== КОНТЕЙНЕР ====== */
+  .container {
+    position:relative; z-index:3;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    height:100%; text-align:center;
+    opacity:0; transform:translateY(30px);
+    animation:containerIn 1s ease-out .7s forwards;
+    transition:transform .1s;
+  }
+  @keyframes containerIn {to{opacity:1;transform:translateY(0);}}
 
-    /* ===== живой бот (Emoji) ===== */
-    .bot {
-      font-size:120px; margin-bottom:24px;
-      animation:botBreath 3s ease-in-out infinite,
-                 botBlink 5s ease-in-out infinite;
-    }
-    @keyframes botBreath {0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
-    @keyframes botBlink  {0%,20%,50%,70%,100%{opacity:1;}25%,65%{opacity:0.4;}}
+  /* ====== 3D TILT ====== */
+  .container { will-change:transform; }
 
-    /* ===== инструкция (glass + neon) ===== */
-    .instruction {
-      background:rgba(255,255,255,0.05);
-      border:2px solid #00d1ff; border-radius:16px;
-      padding:28px; max-width:360px; margin-bottom:30px;
-      box-shadow:0 0 20px rgba(0,209,255,0.4);
-      animation:glow 3s ease-in-out infinite alternate;
-    }
-    @keyframes glow {
-      from{box-shadow:0 0 10px rgba(0,209,255,0.2);}
-      to  {box-shadow:0 0 30px rgba(0,209,255,0.8);}
-    }
-    .instruction p { font-size:18px; line-height:1.4; margin:12px 0; }
-    .instruction p b { color:#00d1ff; font-size:20px; }
+  /* ====== ЖИВОЙ БОТ (эможи + heartbeat) ====== */
+  .bot {
+    font-size:120px; margin-bottom:20px;
+    animation:botPulse 2s ease-in-out infinite, botBlink 4s ease-in-out infinite;
+  }
+  @keyframes botPulse {0%,100%{transform:scale(1);}50%{transform:scale(1.1);}}
+  @keyframes botBlink {0%,20%,50%,70%,100%{opacity:1;}30%,60%{opacity:0.3;}}
 
-    /* ===== glass-кнопка ===== */
-    .btn {
-      padding:14px 36px; font-size:18px; font-weight:700;
-      color:#00d1ff; background:rgba(255,255,255,0.1);
-      border:2px solid #00d1ff; border-radius:12px;
-      backdrop-filter:blur(12px);
-      box-shadow:0 0 15px rgba(0,209,255,0.5);
-      transition:transform .3s,box-shadow .3s;
-      animation:pulse 2s ease-out infinite;
-      position:relative; z-index:2;
-    }
-    .btn:hover {
-      transform:scale(1.05);
-      box-shadow:0 0 25px rgba(0,209,255,0.8);
-    }
-    @keyframes pulse {
-      0%{box-shadow:0 0 10px rgba(0,209,255,0.4);}
-      50%{box-shadow:0 0 20px rgba(0,209,255,0.7);}
-      100%{box-shadow:0 0 10px rgba(0,209,255,0.4);}
-    }
+  /* ====== ИНСТРУКЦИЯ GLASSMORPHIC ====== */
+  .instruction {
+    background:rgba(0,0,0,0.4); border:2px solid rgba(0,209,255,0.6);
+    border-radius:16px; padding:24px; max-width:360px; margin:20px 0;
+    box-shadow:0 0 20px rgba(0,209,255,0.4);
+    animation:glowBorder 2.5s ease-in-out infinite alternate;
+  }
+  @keyframes glowBorder {
+    from{box-shadow:0 0 10px rgba(0,209,255,0.2);}
+    to{box-shadow:0 0 30px rgba(0,209,255,0.8);}
+  }
+  .instruction p { margin:10px 0; font-size:18px; line-height:1.4; }
+  .instruction p b { color:#00d1ff; font-size:20px; }
 
-    /* ===== секретная надпись ===== */
-    .secret {
-      margin-top:30px; font-size:16px; color:#ffd700;
-      opacity:0; transition:opacity 1s;
-    }
-    .secret.show { opacity:1; }
+  /* ====== TEXT TYPOGRAPHY ANIM ====== */
+  .instruction p span {
+    display:inline-block; opacity:0; animation:typing 1s forwards;
+  }
+  @keyframes typing {
+    to{opacity:1;}
+  }
 
-    /* ===== warp-анимация контейнера ===== */
-    .warpCont {
-      animation:warpZoom 1.2s ease-out forwards;
-    }
-    @keyframes warpZoom {
-      0%   { transform:translateY(0) scale(1) rotateX(0) rotateY(0); opacity:1; }
-      70%  { transform:translateY(-50px) scale(1.5) rotateX(10deg) rotateY(10deg); opacity:0.5; }
-      100% { opacity:0; }
-    }
+  /* ====== КНОПКА ====== */
+  .btn {
+    padding:14px 40px; font-size:18px; font-weight:700;
+    background:rgba(255,255,255,0.1); border:2px solid #00d1ff;
+    border-radius:12px; backdrop-filter:blur(12px);
+    color:#00d1ff; box-shadow:0 0 15px rgba(0,209,255,0.5);
+    transition:transform .3s,box-shadow .3s; position:relative;
+    animation:btnPulse 2s ease-out infinite;
+  }
+  .btn:hover { transform:scale(1.05); box-shadow:0 0 25px rgba(0,209,255,0.8); }
+  @keyframes btnPulse {
+    0%{box-shadow:0 0 10px rgba(0,209,255,0.3);}50%{box-shadow:0 0 20px rgba(0,209,255,0.6);}100%{box-shadow:0 0 10px rgba(0,209,255,0.3);}
+  }
+
+  /* ====== СЕКРЕТНАЯ НАДПИСЬ ====== */
+  .secret {
+    margin-top:30px; font-size:16px; color:#ffd700;
+    opacity:0; transition:opacity 1s; font-style:italic;
+  }
+  .secret.show { opacity:1; }
+
+  /* ====== WARP ZOOM ====== */
+  .warpCont {
+    animation:warpZoom 1.2s ease-out forwards;
+  }
+  @keyframes warpZoom {
+    0%{opacity:1;transform:scale(1) rotateX(0) rotateY(0);}
+    50%{opacity:0.6;transform:scale(2) rotateX(10deg) rotateY(10deg);}
+    100%{opacity:0;}
+  }
+
+  /* ====== AUDIO CONTROL ====== */
+  #bgAudio { display:none; }
   </style>
 </head>
 <body>
 
-  <!-- начальная flash -->
+  <!-- звук -->
+  <audio id="bgAudio" loop src="https://cdn.jsdelivr.net/gh/jackchiff/audio@main/space-ambient.mp3"></audio>
+
+  <!-- вспышки -->
   <div class="flash"></div>
-  <!-- warp flash -->
   <div class="warpFlash" id="warpFlash"></div>
 
-  <!-- звёздный фон -->
+  <!-- фон -->
+  <div id="nebula"></div>
   <div id="particles"></div>
+  <canvas id="threejs"></canvas>
 
   <!-- контент -->
   <div class="container tilt" id="container">
+    <!-- бот -->
     <div class="bot">🤖</div>
 
+    <!-- инструкция -->
     <div class="instruction">
-      <p><b>Внимание!</b> TikTok блокирует переход в Telegram.</p>
-      <p>Чтобы всё работало:</p>
-      <p>• Нажми <b>•••</b> (правый верхний угол)</p>
-      <p>• Выбери <b>«Открыть в браузере»</b></p>
-      <p>• И только потом нажми кнопку</p>
+      <p><span style="animation-delay:.1s"><b>Внимание!</b> TikTok блокирует переход</span></p>
+      <p><span style="animation-delay:.3s">Чтобы открыть ссылку:</span></p>
+      <p><span style="animation-delay:.5s">• Нажми <b>•••</b> (правый верхний угол)</span></p>
+      <p><span style="animation-delay:.7s">• Выбери <b>«Открыть в браузере»</b></span></p>
+      <p><span style="animation-delay:.9s">• Только затем нажми кнопку</span></p>
     </div>
 
+    <!-- кнопка -->
     <a href="https://t.me/astropulsereal_bot" class="btn" id="goBtn">Перейти в бот</a>
-    <div class="secret" id="secret">Ты — один из тех, кто чувствует вибрации Вселенной. Мы ждём тебя.</div>
+
+    <!-- секрет -->
+    <div class="secret" id="secret">Ты — один из тех, кто чувствует вибрации Вселенной. Мы ждали тебя.</div>
   </div>
 
   <script>
-    // 1) particles.js: сеть звёзд
-    particlesJS('particles', {
-      particles: {
-        number:{value:200,density:{enable:true,value_area:800}},
-        color:{value:'#ffffff'},
-        shape:{type:'circle'},
-        opacity:{value:0.8,random:true},
-        size:{value:4,random:true},
-        line_linked:{enable:true,distance:150,color:'#444',opacity:0.4,width:1},
-        move:{enable:true,speed:1.2,direction:'center',out_mode:'out'}
-      },
-      interactivity:{detect_on:'canvas',events:{onhover:{enable:false},onclick:{enable:false}}},
-      retina_detect:true
-    });
+  // === AUDIO ===
+  const audio = document.getElementById('bgAudio');
+  window.addEventListener('load', ()=> audio.play().catch(()=>{}));
 
-    // 2) при загрузке: показываем секретную надпись через 7 сек
-    window.addEventListener('load',()=>{
-      setTimeout(()=>{
-        document.getElementById('secret').classList.add('show');
-      },7000);
-    });
+  // === particles.js ===
+  particlesJS('particles', {
+    particles:{
+      number:{value:180,density:{enable:true,value_area:700}},
+      color:{value:'#ffffff'},
+      shape:{type:'circle'},
+      opacity:{value:0.7,random:true},
+      size:{value:3,random:true},
+      line_linked:{enable:true,distance:120,color:'#444',opacity:0.3,width:1},
+      move:{enable:true,speed:1.1,direction:'center',out_mode:'out'}
+    },
+    interactivity:{detect_on:'canvas',events:{onhover:{enable:false},onclick:{enable:false}}},
+    retina_detect:true
+  });
 
-    // 3) Warp + редирект
-    document.getElementById('goBtn').addEventListener('click',e=>{
-      e.preventDefault();
-      // flash
-      document.getElementById('warpFlash').style.display='block';
-      // ускоряем фон
-      document.getElementById('particles').style.animationDuration='0.5s';
-      // запускаем warp-анимацию контейнера
-      document.getElementById('container').classList.add('warpCont');
-      // редирект
-      setTimeout(()=> location.href=e.target.href, 1200);
-    });
+  // === Three.js: вращающаяся 3D сфера ===
+  (function(){
+    const canvas = document.getElementById('threejs'),
+          renderer = new THREE.WebGLRenderer({canvas,alpha:true}),
+          scene = new THREE.Scene(),
+          camera = new THREE.PerspectiveCamera(60,innerWidth/innerHeight,0.1,1000);
+    renderer.setSize(innerWidth,innerHeight);
+    camera.position.z = 2.5;
+    const light = new THREE.PointLight(0xffffff,1);
+    light.position.set(5,5,5); scene.add(light);
+    const geom = new THREE.SphereGeometry(0.5,32,32),
+          mat  = new THREE.MeshStandardMaterial({color:0x3a005f,roughness:0.2,metalness:0.7}),
+          sphere = new THREE.Mesh(geom,mat);
+    scene.add(sphere);
+    function animate(){
+      requestAnimationFrame(animate);
+      sphere.rotation.y += 0.002;
+      renderer.render(scene,camera);
+    }
+    animate();
+  })();
 
-    // 4) 3D Tilt на движение мыши
-    const cont=document.getElementById('container');
-    window.addEventListener('mousemove',e=>{
-      const x=(e.clientX-innerWidth/2)/(innerWidth/2),
-            y=(e.clientY-innerHeight/2)/(innerHeight/2);
-      cont.style.transform=`translateY(0) rotateY(${x*5}deg) rotateX(${-y*5}deg)`;
-    });
-    window.addEventListener('mouseleave',()=>cont.style.transform='translateY(0) rotateY(0) rotateX(0)');
+  // === при загрузке: секрет через 7с ===
+  window.addEventListener('load',()=>{
+    setTimeout(()=>document.getElementById('secret').classList.add('show'),7000);
+  });
+
+  // === Warp + редирект ===
+  document.getElementById('goBtn').addEventListener('click',e=>{
+    e.preventDefault();
+    document.getElementById('warpFlash').style.display='block';
+    document.getElementById('particles').style.animationDuration='0.4s';
+    document.getElementById('container').classList.add('warpCont');
+    setTimeout(()=>location.href=e.target.href,1400);
+  });
+
+  // === 3D-tilt на движение мыши/датчик ===
+  const cont = document.getElementById('container');
+  window.addEventListener('mousemove',e=>{
+    const x=(e.clientX-innerWidth/2)/(innerWidth/2),
+          y=(e.clientY-innerHeight/2)/(innerHeight/2);
+    cont.style.transform=`rotateY(${x*6}deg) rotateX(${-y*6}deg)`;
+  });
+  window.addEventListener('deviceorientation',e=>{
+    const x=e.gamma/45, y=e.beta/45;
+    cont.style.transform=`rotateY(${x*6}deg) rotateX(${-y*6}deg)`;
+  });
   </script>
 </body>
 </html>
